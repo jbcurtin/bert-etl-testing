@@ -1,0 +1,11 @@
+env
+sounds
+build
+dist
+env-test
+env-ops
+*.egg-info
+*.swp
+__pycache__
+*.pyc
+lambdas

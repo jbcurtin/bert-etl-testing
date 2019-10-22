@@ -1,0 +1,18 @@
+deployment:
+    s3_bucket: awesome-test-experiment
+
+every_lambda:
+    batch_size: 150
+    memory_size: 512
+    environment:
+        DEBUG: 'false'
+
+
+init_job_queue:
+    invoke_args_off:
+        - invoke_args.invocation.test_one
+        - '{"json_literal": {"test": 2}}'
+        - yaml_literal:
+            test: 3
+        - ./invoke_args/invocation.json
+        - ./invoke_args/invocation.yaml
