@@ -9,6 +9,10 @@ every_lambda:
 
 
 init_job_queue:
+    events:
+        schedule_expression: 'cron(15 10 * * ? *)'
+        # rate(10 minutes)
+
     invoke_args_off:
         - invoke_args.invocation.test_one
         - '{"json_literal": {"test": 2}}'
@@ -16,3 +20,4 @@ init_job_queue:
             test: 3
         - ./invoke_args/invocation.json
         - ./invoke_args/invocation.yaml
+
