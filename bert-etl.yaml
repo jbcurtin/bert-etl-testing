@@ -3,21 +3,22 @@ deployment:
 
 every_lambda:
     batch_size: 150
-    memory_size: 512
+    memory_size: 256
     environment:
         DEBUG: 'false'
 
 
 init_job_queue:
-    events:
-        schedule_expression: 'cron(15 10 * * ? *)'
-        # rate(10 minutes)
-
-    invoke_args_off:
+    memory_size: 512
+    invoke_args:
         - invoke_args.invocation.test_one
         - '{"json_literal": {"test": 2}}'
         - yaml_literal:
             test: 3
         - ./invoke_args/invocation.json
         - ./invoke_args/invocation.yaml
+
+test_sns_subscription:
+    events:
+        sns_topic_arn: arn:aws:sns:us-east-1:637663616902:billingTest
 
