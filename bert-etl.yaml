@@ -20,6 +20,9 @@ init_job_queue:
 
 # Jobs defined in bert_test_sns
 test_sns_subscription:
+    invoke_args:
+        - bert_test_sns.sns_input.topic
+
     events:
         sns_topic_arn: arn:aws:sns:us-east-1:637663616902:billingTest
 
