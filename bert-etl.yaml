@@ -18,7 +18,13 @@ init_job_queue:
         - ./invoke_args/invocation.json
         - ./invoke_args/invocation.yaml
 
+# Jobs defined in bert_test_sns
 test_sns_subscription:
     events:
         sns_topic_arn: arn:aws:sns:us-east-1:637663616902:billingTest
+
+# Jobs defined in bert_test_iam
+test_cf_disable:
+    iam:
+        execution_role_arn: arn:aws:iam::637663616902:role/LimitedCFRole
 
