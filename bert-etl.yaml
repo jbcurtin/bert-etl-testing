@@ -1,33 +1,43 @@
 deployment:
     s3_bucket: awesome-test-experiment
-
 every_lambda:
     batch_size: 150
-    memory_size: 256
     environment:
         DEBUG: 'false'
-
-
+    memory_size: 256
 init_job_queue:
-    memory_size: 512
     invoke_args:
-        - invoke_args.invocation.test_one
-        - '{"json_literal": {"test": 2}}'
-        - yaml_literal:
+    - invoke_args.invocation.test_one
+    - '{"json_literal": {"test": 2}}'
+    -   yaml_literal:
             test: 3
-        - ./invoke_args/invocation.json
-        - ./invoke_args/invocation.yaml
-
-# Jobs defined in bert_test_sns
-test_sns_subscription:
-    invoke_args:
-        - bert_test_sns.sns_input.topic
-
-    events:
-        sns_topic_arn: arn:aws:sns:us-east-1:637663616902:billingTest
-
-# Jobs defined in bert_test_iam
+    - ./invoke_args/invocation.json
+    - ./invoke_args/invocation.yaml
+    memory_size: 512
+secrets:
+    key_alias: bert-etl
+    usernames:
+    - user/main
+    - role/LimitedKMSRole
 test_cf_disable:
     iam:
         execution_role_arn: arn:aws:iam::637663616902:role/LimitedCFRole
-
+test_kms:
+    iam:
+        execution_role_arn: arn:aws:iam::637663616902:role/LimitedKMSRole
+    environment:
+        GITHUB_TOKEN: bert-etl-encrypted:bert-etl:AQICAHjfiO3dQwlJ8iLBkeAP9eyFeVNWX6o+H0wIbeQySMnrsAELQKgDAnlvtqvlMnoWk4PMAAAAYjBgBgkqhkiG9w0BBwagUzBRAgEAMEwGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMobyvsQAmMjRFuLICAgEQgB8g0GZuYUPSfxioOQNTVSQv05Tmz+Sbc1Vn/GRLkuO4
+        GITHUB_USERNAME: bert-etl-encrypted:bert-etl:AQICAHjfiO3dQwlJ8iLBkeAP9eyFeVNWX6o+H0wIbeQySMnrsAFOvrDKKYnj7LKsTEss6bJMAAAAYjBgBgkqhkiG9w0BBwagUzBRAgEAMEwGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMc9QbHSm2o2kIZYFAAgEQgB85lfAPNCUDv1fk1WiKqc2E45cbPPT+derJNyT2T3Eg
+        KMS_KEY_ALIAS: bert-etl
+        ORGS:
+            astropy: astropy
+            spacetelescope: spacetelescope
+        REPOS:
+        - awesome
+        - repo
+        - name
+test_sns_subscription:
+    events:
+        sns_topic_arn: arn:aws:sns:us-east-1:637663616902:billingTest
+    invoke_args:
+    - bert_test_sns.sns_input.topic
